@@ -23,4 +23,4 @@ dependencies {
 ```
 
 在代码中使用
-!(https://github.com/biby0915/DrawableView/master/preview/20190611112345.jpg)
+!(https://github.com/biby0915/DrawableView/blob/master/preview/20190611112345.jpg)
