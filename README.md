@@ -1,5 +1,5 @@
 # DrawableView
-可以在布局中直接设置shape背景属性，快速编写带样式的组件.
+可以在布局中直接设置shape背景属性，快速编写带样式的组件.  
 目前内置TextView，LinearLayout和View，其他请自行扩展.
 
 ## Features
