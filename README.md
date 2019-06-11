@@ -42,9 +42,9 @@ dependencies {
 ```Java
 //实现1
 TextDrawableBackgroundImpl background = tv.getDrawableBackground();
-        background.solidColor = Color.WHITE;
-        background.bottomLeftRadius = 100;
-        background.invalidate();
+background.solidColor = Color.WHITE;
+background.bottomLeftRadius = 100;
+background.invalidate();
 	
 //实现2	
 tv.getDrawableBackground().setBackgroundParams(new String[]{"solidColor", "cornerRadius"}, new Object[]{Color.BLACK, 10});
