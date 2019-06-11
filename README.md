@@ -21,3 +21,6 @@ dependencies {
 	implementation 'com.github.biby0915:DrawableView:1.0.0'
 }
 ```
+
+在布局文件中使用
+![xml](https://github.com/biby0915/DrawableView/blob/master/preview/20190611112345.jpg)
