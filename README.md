@@ -21,3 +21,6 @@ dependencies {
 	implementation 'com.github.biby0915:DrawableView:1.0.0'
 }
 ```
+
+在代码中使用
+!(https://github.com/biby0915/DrawableView/master/preview/20190611112345.jpg)
