@@ -1,8 +1,14 @@
 # DrawableViewDemo
 可以在布局中直接设置shape背景属性，快速编写带样式的组件
 
+# Features
+
 
 ## How To Use  
+* 支持所有shape标签的属性
+* TextView 设置drawable可以设置图片大小
+* TextView 的drawable支持添加点击事件
+* Animator动态改变背景
 
 Step 1. Add the JitPack repository to your build file
 
