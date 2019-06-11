@@ -6,14 +6,17 @@ import android.view.View;
 
 import androidx.annotation.Nullable;
 
+import com.zby.drawableview.background.AnimatorSupport;
+import com.zby.drawableview.background.AnimatorSupportImpl;
 import com.zby.drawableview.background.DefaultDrawableBackground;
 
 /**
  * @author ZhuBingYang
  */
-public class DrawableView extends View {
+public class DrawableView extends View implements AnimatorSupport {
 
     private DefaultDrawableBackground mDrawableBackground;
+    private AnimatorSupport mAnimatorSupport;
 
     public DrawableView(Context context) {
         this(context, null);
@@ -28,9 +31,21 @@ public class DrawableView extends View {
 
         mDrawableBackground = new DefaultDrawableBackground();
         mDrawableBackground.generateBackground(this, attrs);
+
+        mAnimatorSupport = new AnimatorSupportImpl(mDrawableBackground);
     }
 
     public DefaultDrawableBackground getDrawableBackground() {
         return mDrawableBackground;
+    }
+
+    @Override
+    public void setCornerRadius(int radius) {
+        mAnimatorSupport.setCornerRadius(radius);
+    }
+
+    @Override
+    public void setSolidColor(int color) {
+        mAnimatorSupport.setSolidColor(color);
     }
 }

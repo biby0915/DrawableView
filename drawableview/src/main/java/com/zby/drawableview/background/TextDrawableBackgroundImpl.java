@@ -20,8 +20,8 @@ public class TextDrawableBackgroundImpl extends DefaultDrawableBackground implem
     public int textColor;
     public int touchTextColor;
 
-    public int drawableWidth;
-    public int drawableHeight;
+    public int drawableLeftWidth;
+    public int drawableLeftHeight;
 
     public int drawableRightWidth;
     public int drawableRightHeight;
@@ -31,6 +31,10 @@ public class TextDrawableBackgroundImpl extends DefaultDrawableBackground implem
 
     public int drawableBottomWidth;
     public int drawableBottomHeight;
+
+
+    private Position mTouchDrawablePosition;
+    private OnDrawableClickListener mOnDrawableClickListener;
 
     @Override
     public void generateBackground(View view, AttributeSet attrs) {
@@ -63,8 +67,8 @@ public class TextDrawableBackgroundImpl extends DefaultDrawableBackground implem
         gradientRight = a.getDimensionPixelOffset(R.styleable.DrawableTextView_gradientRight, 0);
         gradientBottom = a.getDimensionPixelOffset(R.styleable.DrawableTextView_gradientBottom, 0);
 
-        drawableWidth = a.getDimensionPixelOffset(R.styleable.DrawableTextView_drawableWidth, Util.dip2px(25));
-        drawableHeight = a.getDimensionPixelOffset(R.styleable.DrawableTextView_drawableHeight, Util.dip2px(25));
+        drawableLeftWidth = a.getDimensionPixelOffset(R.styleable.DrawableTextView_drawableLeftWidth, Util.dip2px(25));
+        drawableLeftHeight = a.getDimensionPixelOffset(R.styleable.DrawableTextView_drawableLeftHeight, Util.dip2px(25));
 
         drawableRightWidth = a.getDimensionPixelOffset(R.styleable.DrawableTextView_drawableRightWidth, Util.dip2px(25));
         drawableRightHeight = a.getDimensionPixelOffset(R.styleable.DrawableTextView_drawableRightHeight, Util.dip2px(25));
@@ -112,8 +116,8 @@ public class TextDrawableBackgroundImpl extends DefaultDrawableBackground implem
 
         //设置宽高
         textDrawable = drawables[0];
-        if (textDrawable != null && drawableWidth != -1 && drawableHeight != -1) {
-            textDrawable.setBounds(0, 0, drawableWidth, drawableHeight);
+        if (textDrawable != null && drawableLeftWidth != -1 && drawableLeftHeight != -1) {
+            textDrawable.setBounds(0, 0, drawableLeftWidth, drawableLeftHeight);
         }
 
         textDrawable = drawables[1];
@@ -139,22 +143,13 @@ public class TextDrawableBackgroundImpl extends DefaultDrawableBackground implem
     public boolean onTouchEvent(MotionEvent event) {
         if (!(mView instanceof EditText))
             if (event.getAction() == MotionEvent.ACTION_DOWN) {
-//            if (onDrawableClickListener != null) {
-//
-//                Drawable drawable = getCompoundDrawables()[2];
-//                if (drawable != null && event.getX() >= (getWidth() - drawable.getBounds().width())) {
-//                    onDrawableClickListener.onClick(this);
-//                    return true;
-//                }
-//
-//            } else if (onLeftDrawableClickListener != null) {
-//                Drawable drawable = getCompoundDrawables()[0];
-//                if (drawable != null && event.getX() <= drawable.getBounds().width()) {
-//
-//                    onLeftDrawableClickListener.onClick(this);
-//                    return true;
-//                }
-//            }
+                if (mOnDrawableClickListener != null) {
+                    mTouchDrawablePosition = detectDrawableTouch(event);
+
+                    if (mTouchDrawablePosition != null) {
+                        return true;
+                    }
+                }
 
 
                 if (mView.hasOnClickListeners()) {
@@ -179,9 +174,33 @@ public class TextDrawableBackgroundImpl extends DefaultDrawableBackground implem
                 if (touchTextColor != Color.TRANSPARENT) {
                     ((TextView) mView).setTextColor(textColor);
                 }
+
+                if (mTouchDrawablePosition != null && mTouchDrawablePosition == detectDrawableTouch(event)) {
+                    mOnDrawableClickListener.onClick(mTouchDrawablePosition);
+                }
+
             }
 
         return false;
+    }
+
+    private Position detectDrawableTouch(MotionEvent event) {
+        Drawable[] drawable = ((TextView) mView).getCompoundDrawables();
+        if (drawable[2] != null && event.getX() >= (mView.getWidth() - drawable[2].getBounds().width() - mView.getPaddingRight() - ((TextView) mView).getCompoundDrawablePadding())
+                && Math.abs(event.getY() - (mView.getHeight() >> 1)) < drawable[2].getBounds().height() / 2) {
+            return Position.RIGHT;
+        } else if (drawable[0] != null && event.getX() <= drawable[0].getBounds().width() + mView.getPaddingLeft() + ((TextView) mView).getCompoundDrawablePadding()
+                && Math.abs(event.getY() - (mView.getHeight() >> 1)) < drawable[0].getBounds().height() / 2) {
+            return Position.LEFT;
+        } else if (drawable[1] != null && event.getY() <= drawable[1].getBounds().height() + mView.getPaddingTop() + ((TextView) mView).getCompoundDrawablePadding()
+                && Math.abs(event.getX() - (mView.getWidth() >> 1)) < drawable[2].getBounds().width() / 2) {
+            return Position.TOP;
+        } else if (drawable[3] != null && event.getX() >= mView.getHeight() - drawable[3].getBounds().width() - mView.getPaddingBottom() - ((TextView) mView).getCompoundDrawablePadding()
+                && Math.abs(event.getX() - (mView.getWidth() >> 1)) < drawable[3].getBounds().width() / 2) {
+            return Position.BOTTOM;
+        }
+
+        return null;
     }
 
     @Override
@@ -192,8 +211,8 @@ public class TextDrawableBackgroundImpl extends DefaultDrawableBackground implem
         int index = 0;
         switch (position) {
             case LEFT:
-                width = drawableWidth;
-                height = drawableHeight;
+                width = drawableLeftWidth;
+                height = drawableLeftHeight;
                 break;
             case TOP:
                 width = drawableTopWidth;
@@ -223,5 +242,17 @@ public class TextDrawableBackgroundImpl extends DefaultDrawableBackground implem
         drawables[index] = drawable;
 
         ((TextView) mView).setCompoundDrawables(drawables[0], drawables[1], drawables[2], drawables[3]);
+    }
+
+    public OnDrawableClickListener getOnDrawableClickListener() {
+        return mOnDrawableClickListener;
+    }
+
+    public void setOnDrawableClickListener(OnDrawableClickListener mOnDrawableClickListener) {
+        this.mOnDrawableClickListener = mOnDrawableClickListener;
+    }
+
+    public interface OnDrawableClickListener {
+        void onClick(Position position);
     }
 }

@@ -1,7 +1,3 @@
-/**
- * I'm sorry  it's hard to read
- */
-
 package com.zby.drawableview;
 
 import android.content.Context;
@@ -18,7 +14,7 @@ import com.zby.drawableview.background.TextDrawableBackgroundImpl;
  */
 public class DrawableTextView extends TextView implements AnimatorSupport {
     private TextDrawableBackgroundImpl mDrawableBackground;
-    private AnimatorSupportImpl mAnimatorSupport;
+    private AnimatorSupport mAnimatorSupport;
 
     public DrawableTextView(Context context) {
         this(context, null);
@@ -60,5 +56,9 @@ public class DrawableTextView extends TextView implements AnimatorSupport {
     @Override
     public void setSolidColor(int color) {
         mAnimatorSupport.setSolidColor(color);
+    }
+
+    public void setOnDrawableClickListener(TextDrawableBackgroundImpl.OnDrawableClickListener listener) {
+        mDrawableBackground.setOnDrawableClickListener(listener);
     }
 }
