@@ -22,5 +22,5 @@ dependencies {
 }
 ```
 
-在代码中使用
+在布局文件中使用
 ![xml](https://github.com/biby0915/DrawableView/blob/master/preview/20190611112345.jpg)
