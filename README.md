@@ -23,4 +23,4 @@ dependencies {
 ```
 
 在布局文件中使用
-![xml](https://github.com/biby0915/DrawableView/blob/master/preview/20190611112345.jpg)
+![xml](https://github.com/biby0915/DrawableView/blob/master/preview/20190611113318.jpg)
