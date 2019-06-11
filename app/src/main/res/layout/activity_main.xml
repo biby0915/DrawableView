@@ -11,8 +11,9 @@
         android:padding="10dp"
         android:text="Hello World!"
         android:textColor="#FFFFFF"
+        app:strokeWidth="2dp"
+        app:strokeColor="@color/colorAccent"
         app:cornerRadius="10dp"
         app:solidColor="@color/colorPrimaryDark" />
-
 
 </FrameLayout>
